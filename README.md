@@ -14,7 +14,7 @@ Unified RTEL (Read-Transform-Evaluate Loop) for JavaScript modules.
 >
 > Which is the RTEL loop.
 >
-> Therefore we somehow created a new name for this kind of process in more idomatical way which capable of expressing the meaning in much obvious way, **RTEL**.
+> Therefore we somehow created a new name for this kind of process in more idiomatical way which capable of expressing the meaning in much obvious way, **RTEL**.
 
 ## Development
 
