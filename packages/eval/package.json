@@ -1,0 +1,42 @@
+{
+  "name": "@unrteljs/eval",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Evaluate modules",
+  "author": {
+    "name": "UnRTEL.js Team & Contributors",
+    "email": "airi@moeru.ai",
+    "url": "https://github.com/unrteljs"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/unrteljs/unrtel",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unrteljs/unrtel.git",
+    "directory": "packages/eval"
+  },
+  "bugs": "https://github.com/unrteljs/unrtel/issues",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "node": "./dist/node.mjs",
+      "browser": "./dist/browser.mjs"
+    }
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "unbuild",
+    "stub": "unbuild",
+    "build": "unbuild",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "error-stack-parser": "^2.1.4",
+    "sucrase": "^3.35.0"
+  }
+}
