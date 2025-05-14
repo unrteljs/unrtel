@@ -41,7 +41,7 @@ async function dynamicImportAnyModule(name: string): Promise<any> {
 }
 
 // https://github.com/unocss/unocss/blob/main/packages/shared-docs/src/config.ts
-export async function evaluateAnyModule<T>(configCode: string): Promise<T | undefined> {
+export async function evaluate<T>(configCode: string, _basePath?: string): Promise<T | undefined> {
   const transformedCode = configCode
     .replace(importObjectRegex, (_match, p1, _p2, p3) => {
       // Replace `as` with `:` within the destructuring assignment

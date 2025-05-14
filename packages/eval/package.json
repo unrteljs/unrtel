@@ -22,6 +22,14 @@
       "import": "./dist/index.mjs",
       "node": "./dist/node.mjs",
       "browser": "./dist/browser.mjs"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.mjs"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.mjs"
     }
   },
   "files": [
