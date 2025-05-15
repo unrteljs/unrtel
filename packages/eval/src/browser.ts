@@ -1,17 +1,21 @@
-// https://github.com/unocss/unocss/blob/6d94efc56b0c966f25f46d8988b3fd30ebc189aa/packages/shared-docs/src/config.ts#L5
+// https://github.com/unocss/unocss/blob/1266143d689cc7400247056abf674a13da98e74b/virtual-shared/docs/src/config.ts#L5
+
+import type { EvaluateOptions } from './types'
 
 import { AsyncFunction } from './utils/helper'
 import { getImportBase } from './utils/import-base'
 import { exportDefaultRegex, exportRegex, importAsRegex, importDefaultRegex, importObjectRegex, importRegex } from './utils/regexp'
 
-// https://github.com/unocss/unocss/blob/6d94efc56b0c966f25f46d8988b3fd30ebc189aa/packages/shared-docs/src/config.ts#L7-L9
+export type { EvaluateOptions }
+
+// https://github.com/unocss/unocss/blob/1266143d689cc7400247056abf674a13da98e74b/virtual-shared/docs/src/config.ts#L7-L9
 const modulesCache = new Map<string, Promise<unknown> | unknown>()
 
-// https://github.com/unocss/unocss/blob/6d94efc56b0c966f25f46d8988b3fd30ebc189aa/packages/shared-docs/src/config.ts#L26
+// https://github.com/unocss/unocss/blob/1266143d689cc7400247056abf674a13da98e74b/virtual-shared/docs/src/config.ts#L26
 // eslint-disable-next-line no-new-func
 const nativeImport = new Function('a', 'return import(a);')
 
-// https://github.com/unocss/unocss/blob/6d94efc56b0c966f25f46d8988b3fd30ebc189aa/packages/shared-docs/src/config.ts#L31-L33
+// https://github.com/unocss/unocss/blob/1266143d689cc7400247056abf674a13da98e74b/virtual-shared/docs/src/config.ts#L31-L33
 async function fetchAndImportAnyModuleWithCDNCapabilities(name: string) {
   if (name.endsWith('.json')) {
     const response = await fetch(getImportBase() + name)
@@ -23,7 +27,7 @@ async function fetchAndImportAnyModuleWithCDNCapabilities(name: string) {
   return nativeImport(getImportBase() + name)
 }
 
-// https://github.com/unocss/unocss/blob/6d94efc56b0c966f25f46d8988b3fd30ebc189aa/packages/shared-docs/src/config.ts#L27-L37
+// https://github.com/unocss/unocss/blob/1266143d689cc7400247056abf674a13da98e74b/virtual-shared/docs/src/config.ts#L27-L37
 // bypass vite interop
 async function dynamicImportAnyModule(name: string): Promise<any> {
   if (modulesCache.has(name))
@@ -40,9 +44,32 @@ async function dynamicImportAnyModule(name: string): Promise<any> {
   }
 }
 
-// https://github.com/unocss/unocss/blob/main/packages/shared-docs/src/config.ts
-export async function evaluate<T>(configCode: string, _basePath?: string): Promise<T | undefined> {
-  const transformedCode = configCode
+// https://github.com/unocss/unocss/blob/1266143d689cc7400247056abf674a13da98e74b/virtual-shared/docs/src/config.ts#L27-L37
+export async function evaluate<T>(source: string, options?: EvaluateOptions): Promise<T | undefined> {
+  const noExternal = options?.noExternal ?? []
+
+  const noExternalRegexps = noExternal.map(name => ({
+    match: new RegExp(`import\\s(.*?)\\sfrom\\s*(['"])${name}\\2`, 'g'),
+    to: `const $1 = await __import("${name}");`,
+  }))
+
+  let transformedCode = source
+
+  if (noExternalRegexps?.length) {
+    noExternalRegexps.forEach((regex) => {
+      transformedCode = transformedCode.replace(regex.match, regex.to)
+    })
+  }
+
+  transformedCode = transformedCode
+  // Handle 'export * from "module"'
+    .replace(/export\s+\*\s+from\s+(['"])([^'"]+)\1/g, 'Object.assign(exports, await __import("$2"));')
+
+  // Handle 'export { namedExport } from "module"'
+  // eslint-disable-next-line regexp/no-super-linear-backtracking, regexp/optimal-quantifier-concatenation
+    .replace(/export\s*\{\s*([^}]+)\s*\}\s*from\s+(['"])([^'"]+)\2/g, (_match, p1, _p2, p3) => {
+      return `const { ${p1} } = await __import("${p3}");\nObject.assign(exports, { ${p1} });`
+    })
     .replace(importObjectRegex, (_match, p1, _p2, p3) => {
       // Replace `as` with `:` within the destructuring assignment
       const transformedP1 = p1.replace(importAsRegex, '$1: $2')

@@ -44,6 +44,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "builtin-modules": "^5.0.0",
     "error-stack-parser": "^2.1.4",
     "sucrase": "^3.35.0"
   }

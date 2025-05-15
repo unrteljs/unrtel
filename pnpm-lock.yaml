@@ -66,6 +66,9 @@ importers:
 
   packages/eval:
     dependencies:
+      builtin-modules:
+        specifier: ^5.0.0
+        version: 5.0.0
       error-stack-parser:
         specifier: ^2.1.4
         version: 2.1.4

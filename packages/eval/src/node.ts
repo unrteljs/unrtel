@@ -1,22 +1,29 @@
-// https://github.com/nolebase/obsidian-plugin-vue/blob/main/src/import.ts
+import type { EvaluateOptions } from './types'
 
 import { createRequire } from 'node:module'
+import builtinModules from 'builtin-modules'
 
 import { AsyncFunction } from './utils/helper'
 import { getImportBase, setImportBase } from './utils/import-base'
 import { exportDefaultRegex, exportRegex, importAsRegex, importDefaultRegex, importObjectRegex, importRegex } from './utils/regexp'
 
-// https://github.com/unocss/unocss/blob/6d94efc56b0c966f25f46d8988b3fd30ebc189aa/packages/shared-docs/src/config.ts#L31-L33
-async function wrappedImport(name: string, basePath?: string) {
-  const require = createRequire(basePath ?? import.meta.dirname)
+export type { EvaluateOptions }
+
+// https://github.com/unocss/unocss/blob/1266143d689cc7400247056abf674a13da98e74b/virtual-shared/docs/src/#L31-L33
+async function wrappedImport(name: string, base?: string) {
+  if (builtinModules.includes(name)) {
+    return await import(name)
+  }
+
+  const require = createRequire(base ?? import.meta.dirname)
   return require(name)
 }
 
-// https://github.com/unocss/unocss/blob/6d94efc56b0c966f25f46d8988b3fd30ebc189aa/packages/shared-docs/src/config.ts#L27-L37
+// https://github.com/unocss/unocss/blob/1266143d689cc7400247056abf674a13da98e74b/virtual-shared/docs/src/#L27-L37
 // bypass vite interop
-async function dynamicImportAnyModule(name: string, basePath?: string): Promise<any> {
+async function dynamicImportAnyModule(name: string, base?: string): Promise<any> {
   try {
-    const module = await wrappedImport(name, basePath)
+    const module = await wrappedImport(name, base)
 
     if (module && module.__esModule) {
       const finalModule = module['module.exports'] || module
@@ -31,8 +38,22 @@ async function dynamicImportAnyModule(name: string, basePath?: string): Promise<
 }
 
 // https://github.com/unocss/unocss/blob/main/packages/shared-docs/src/config.ts
-export async function evaluate<T>(configCode: string, basePath?: string): Promise<T | undefined> {
-  const transformedCode = configCode
+export async function evaluate<T>(source: string, options?: EvaluateOptions): Promise<T | undefined> {
+  const noExternal = options?.noExternal ?? []
+
+  const noExternalRegexps = noExternal.map(name => ({
+    match: new RegExp(`import\\s(.*?)\\sfrom\\s*(['"])${name}\\2`, 'g'),
+    to: `const $1 = await import("${name}");`,
+  }))
+
+  let transformedCode = source
+  if (noExternalRegexps?.length) {
+    noExternalRegexps.forEach((regex) => {
+      transformedCode = transformedCode.replace(regex.match, regex.to)
+    })
+  }
+
+  transformedCode = transformedCode
     .replace(importObjectRegex, (_match, p1, _p2, p3) => {
       // Replace `as` with `:` within the destructuring assignment
       const transformedP1 = p1.replace(importAsRegex, '$1: $2')
@@ -44,7 +65,7 @@ export async function evaluate<T>(configCode: string, basePath?: string): Promis
     .replace(exportRegex, 'return function ')
 
   const wrappedDynamicImport = new AsyncFunction('__import', transformedCode)
-  return await wrappedDynamicImport(name => dynamicImportAnyModule(name, basePath))
+  return await wrappedDynamicImport(name => dynamicImportAnyModule(name, options?.base))
 }
 export {
   getImportBase,
