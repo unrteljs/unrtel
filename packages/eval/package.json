@@ -1,7 +1,7 @@
 {
   "name": "@unrteljs/eval",
   "type": "module",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Evaluate modules",
   "author": {
     "name": "UnRTEL.js Team & Contributors",
