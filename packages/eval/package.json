@@ -18,11 +18,11 @@
   "bugs": "https://github.com/unrteljs/unrtel/issues",
   "exports": {
     ".": {
+      "browser": "./dist/browser.mjs",
+      "node": "./dist/node.mjs",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "node": "./dist/node.mjs",
-      "default": "./dist/index.mjs",
-      "browser": "./dist/browser.mjs"
+      "default": "./dist/index.mjs"
     },
     "./node": {
       "types": "./dist/node.d.ts",
