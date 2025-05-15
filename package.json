@@ -20,14 +20,16 @@
     "test:run": "vitest run",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --cache --fix .",
-    "typecheck": "pnpm -rF=\"./packages/*\" -F run --parallel typecheck",
+    "typecheck": "pnpm -rF=\"./packages/*\" run --parallel typecheck",
     "sizecheck": "npx vite-bundle-visualizer",
     "up": "taze major -I",
-    "nolyfill": "pnpm dlx nolyfill"
+    "nolyfill": "pnpm dlx nolyfill",
+    "packages:attw": "pnpm -rF=\"./packages/*\" run --parallel attw"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.13.0",
     "@antfu/ni": "^24.3.0",
+    "@arethetypeswrong/cli": "^0.18.1",
     "@types/node": "^22.15.17",
     "@unocss/eslint-config": "^66.1.1",
     "@unocss/eslint-plugin": "^66.1.1",
