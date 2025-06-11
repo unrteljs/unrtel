@@ -44,15 +44,13 @@
     "package.json"
   ],
   "scripts": {
-    "dev": "unbuild",
-    "stub": "unbuild",
-    "build": "unbuild",
+    "dev": "tsdown",
+    "stub": "tsdown",
+    "build": "tsdown",
     "typecheck": "tsc --noEmit",
     "attw": "attw --pack . --profile esm-only --ignore-rules cjs-resolves-to-esm"
   },
   "dependencies": {
-    "builtin-modules": "^5.0.0",
-    "error-stack-parser": "^2.1.4",
-    "sucrase": "^3.35.0"
+    "builtin-modules": "^5.0.0"
   }
 }

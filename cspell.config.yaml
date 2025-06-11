@@ -2,6 +2,18 @@ version: '0.2'
 ignorePaths: []
 dictionaryDefinitions: []
 dictionaries: []
-words: []
+words:
+  - attw
+  - bumpp
+  - changelogithub
+  - feaxios
+  - matchall
+  - nolyfill
+  - sizecheck
+  - taze
+  - tsdown
+  - unocss
+  - unrtel
+  - unrteljs
 ignoreWords: []
 import: []
