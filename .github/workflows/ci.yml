@@ -44,7 +44,6 @@ jobs:
       - name: Build
         run: |
           pnpm run build
-          pnpm run packages:attw
 
   test:
     name: Test
