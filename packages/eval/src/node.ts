@@ -1,7 +1,8 @@
-import type { EvaluateOptions } from './types'
-
 import { createRequire } from 'node:module'
+
 import builtinModules from 'builtin-modules'
+
+import type { EvaluateOptions } from './types'
 
 import { AsyncFunction } from './utils/helper'
 import { getImportBase, setImportBase } from './utils/import-base'
