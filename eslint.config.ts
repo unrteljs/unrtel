@@ -2,8 +2,6 @@ import antfu from '@antfu/eslint-config'
 
 export default await antfu(
   {
-    unocss: true,
-    vue: true,
     rules: {
       'antfu/import-dedupe': 'error',
       'import/order': 'off',
