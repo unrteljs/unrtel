@@ -2,7 +2,7 @@
   "name": "@unrteljs/root",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.33.0",
   "author": {
     "name": "UnRTEL.js Team & UnRTEL.js contributors",
     "email": "neko@moeru.ai",
@@ -28,41 +28,28 @@
     "nolyfill": "pnpm dlx nolyfill"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.14.1",
-    "@antfu/ni": "^25.0.0",
+    "@antfu/eslint-config": "^8.2.0",
+    "@antfu/ni": "^30.0.0",
     "@arethetypeswrong/cli": "^0.18.2",
     "@arethetypeswrong/core": "^0.18.2",
-    "@types/node": "^24.0.3",
-    "@unocss/eslint-config": "^66.2.1",
-    "@unocss/eslint-plugin": "^66.2.1",
-    "bumpp": "^10.2.0",
-    "eslint": "^9.29.0",
-    "rollup": "^4.43.0",
-    "taze": "^19.1.0",
-    "tsdown": "^0.12.8",
-    "typescript": "~5.8.3",
-    "unbuild": "^3.5.0",
-    "unocss": "^66.2.1",
-    "unplugin-unused": "^0.5.1",
-    "vite": "^6.3.5",
-    "vite-plugin-inspect": "^11.2.0",
-    "vitest": "^3.2.3"
+    "@types/node": "^25.6.0",
+    "@unocss/eslint-config": "^66.6.8",
+    "@unocss/eslint-plugin": "^66.6.8",
+    "bumpp": "^11.0.1",
+    "eslint": "^10.2.0",
+    "rollup": "^4.60.1",
+    "taze": "^19.11.0",
+    "tsdown": "^0.21.8",
+    "typescript": "~6.0.2",
+    "unbuild": "^3.6.1",
+    "unocss": "^66.6.8",
+    "unplugin-unused": "^0.5.7",
+    "vite": "^8.0.8",
+    "vite-plugin-inspect": "^11.3.3",
+    "vitest": "^4.1.4"
   },
   "workspaces": [
     "packages/**",
     "playground"
-  ],
-  "pnpm": {
-    "neverBuiltDependencies": [],
-    "overrides": {
-      "array-flatten": "npm:@nolyfill/array-flatten@^1.0.44",
-      "axios": "npm:feaxios@^0.0.23",
-      "is-core-module": "npm:@nolyfill/is-core-module@^1.0.39",
-      "isarray": "npm:@nolyfill/isarray@^1.0.44",
-      "safe-buffer": "npm:@nolyfill/safe-buffer@^1.0.44",
-      "safer-buffer": "npm:@nolyfill/safer-buffer@^1.0.44",
-      "side-channel": "npm:@nolyfill/side-channel@^1.0.44",
-      "string.prototype.matchall": "npm:@nolyfill/string.prototype.matchall@^1.0.44"
-    }
-  }
+  ]
 }

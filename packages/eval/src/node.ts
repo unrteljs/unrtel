@@ -1,8 +1,8 @@
+import type { EvaluateOptions } from './types'
+
 import { createRequire } from 'node:module'
 
 import builtinModules from 'builtin-modules'
-
-import type { EvaluateOptions } from './types'
 
 import { AsyncFunction } from './utils/helper'
 import { getImportBase, setImportBase } from './utils/import-base'
@@ -66,7 +66,7 @@ export async function evaluate<T>(source: string, options?: EvaluateOptions): Pr
     .replace(exportRegex, 'return function ')
 
   const wrappedDynamicImport = new AsyncFunction('__import', transformedCode)
-  return await wrappedDynamicImport(name => dynamicImportAnyModule(name, options?.base))
+  return await wrappedDynamicImport((name: string) => dynamicImportAnyModule(name, options?.base))
 }
 export {
   getImportBase,
